@@ -10,34 +10,42 @@ const body = document.querySelector('body');
 let highScore = 0;
 
 let guess = '';
-function wrongGuess() {
-    document.querySelector('.message').textContent = (guess > secretNumber? '📈 Too high!!': '📉 Too low!!')
-    score--;
+
+function displayMessage(message) {
+    document.querySelector('.message').textContent = message;
+}
+
+function displayScore(score) {
     document.querySelector('.score').textContent = score;
 }
+
+function wrongGuess() {
+    displayMessage((guess > secretNumber ? '📈 Too high!!' : '📉 Too low!!'));
+    score--;
+    displayScore(score)
+}
+
 checkButton.addEventListener('click', function () {
-     guess = Number(document.querySelector('.guess').value);
-    console.log(guess, typeof guess);
+    guess = Number(document.querySelector('.guess').value);
 // if there is no number entered
     if (!guess) {
-        document.querySelector('.message').textContent = '⛔ No number!'
+        displayMessage('⛔ No number!')
     } /* if the player wins*/
     else if (guess === secretNumber) {
         document.querySelector('.number').textContent = secretNumber;
         body.style.backgroundColor = 'green';
         document.querySelector('.number').style.width = '30rem'
-        document.querySelector('.message').textContent = '🏆 Correct Number!!'
+        displayMessage('🏆 Correct Number!!')
         if (highScore < score) {
-        document.querySelector('.highScore').textContent = score;
-
+            document.querySelector('.highScore').textContent = score;
         }
     } /*if the guess is greater than the random number*/
     else if (score > 1) {
-            wrongGuess();
+        wrongGuess();
 
     } else {
-        document.querySelector('.message').textContent = '❌ You Lost'
-        document.querySelector('.score').textContent = 0;
+        displayMessage('❌ You Lost')
+        displayScore(0)
     }
 });
 
@@ -50,8 +58,8 @@ function getSecretNumber() {
 againButton.addEventListener('click', function () {
     secretNumber = getSecretNumber();
     score = 20;
-    document.querySelector('.message').textContent = '🤏 Start guessing...'
-    document.querySelector('.score').textContent = score;
+    displayMessage('🤏 Start guessing...')
+    displayScore(score)
     document.querySelector('.guess').value = ''
     document.querySelector('.number').textContent = '?'
     document.querySelector('.number').style.width = '15rem'
